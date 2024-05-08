@@ -1,6 +1,7 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Switch } from "react-native";
 import { Header, VideoDataService } from "../../../components";
 import { styles } from "./styles";
+import useTheme from "../../theme/useTheme";
 import useThemedStyles from "../../theme/useThemedStyles";
 
 export const HomeScreen = () => {
