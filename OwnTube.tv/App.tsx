@@ -2,20 +2,20 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { AppConfigContextProvider, VideoServiceContextProvider } from "./contexts";
 import { Navigation } from "./navigation";
-import { ColorSchemeContextProvider } from "./contexts";
+import ThemeProvider from "./src/theme/ThemeProvider";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <AppConfigContextProvider>
-        <VideoServiceContextProvider>
-          <ColorSchemeContextProvider>
+    <ThemeProvider>
+      <SafeAreaView style={styles.container}>
+        <AppConfigContextProvider>
+          <VideoServiceContextProvider>
             <StatusBar style="auto" />
             <Navigation />
-          </ColorSchemeContextProvider>
-        </VideoServiceContextProvider>
-      </AppConfigContextProvider>
-    </SafeAreaView>
+          </VideoServiceContextProvider>
+        </AppConfigContextProvider>
+      </SafeAreaView>
+    </ThemeProvider>
   );
 }
 

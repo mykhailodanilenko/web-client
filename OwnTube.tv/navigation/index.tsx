@@ -1,32 +1,19 @@
-import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useColorSchemeContext } from "../contexts";
-import { HomeScreen, SettingsScreen } from "../src/screens";
-import { Pressable } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { ComponentProps } from "react";
+import { routes } from "./routes";
 
 const Stack = createNativeStackNavigator();
 
-export const Navigation = () => {
-  const { scheme } = useColorSchemeContext();
-  const theme = scheme === "dark" ? DarkTheme : DefaultTheme;
+export type TRoutes = ComponentProps<typeof Stack.Screen>[];
 
+export const Navigation = () => {
   return (
-    <NavigationContainer theme={theme}>
+    <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name={"Home"}
-          component={HomeScreen}
-          options={({ navigation }) => ({
-            title: "Home",
-            headerRight: () => (
-              <Pressable onPress={() => navigation.navigate("Settings")}>
-                <Feather name="settings" size={24} color={theme.colors.primary} />
-              </Pressable>
-            ),
-          })}
-        />
-        <Stack.Screen name={"Settings"} component={SettingsScreen} />
+        {routes.map((route) => (
+          <Stack.Screen {...route} key={route.name} />
+        ))}
       </Stack.Navigator>
     </NavigationContainer>
   );

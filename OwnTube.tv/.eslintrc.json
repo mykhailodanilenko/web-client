@@ -17,9 +17,7 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "react", "react-native"],
-  "rules": {
-    "react-native/no-raw-text": ["error", {"skip": ["Typography"]}]
-  },
+  "rules": {},
   "settings": {
     "react": {
       "version": "18"
