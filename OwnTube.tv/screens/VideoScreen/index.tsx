@@ -1,18 +1,17 @@
 import VideoView from "../../components/VideoView";
-import { useLocalSearchParams } from "expo-router";
 import { RootStackParams } from "../../app/_layout";
-import { ROUTES } from "../../types";
 import { useGetVideoQuery } from "../../api";
 import { useMemo } from "react";
 import { Loader } from "../../components";
+import { useNavigationState } from "@react-navigation/native";
 
 export const VideoScreen = () => {
-  const params = useLocalSearchParams<RootStackParams[ROUTES.VIDEO]>();
+  const id = useNavigationState<RootStackParams, string | undefined>((state) => state.routes.at(-1)?.params?.id);
 
-  const { data, isFetching } = useGetVideoQuery(params?.id);
+  const { data, isFetching } = useGetVideoQuery(id);
 
   const uri = useMemo(() => {
-    if (!params?.id || !data) {
+    if (!id || !data) {
       return;
     }
 
@@ -26,7 +25,7 @@ export const VideoScreen = () => {
 
     // temporarily choose the highest quality
     return files?.[0].fileUrl;
-  }, [params, data]);
+  }, [id, data]);
 
   if (isFetching) {
     return <Loader />;
@@ -36,5 +35,5 @@ export const VideoScreen = () => {
     return null;
   }
 
-  return <VideoView testID={`${params.id}-video-view`} uri={uri} />;
+  return <VideoView testID={`${id}-video-view`} uri={uri} />;
 };

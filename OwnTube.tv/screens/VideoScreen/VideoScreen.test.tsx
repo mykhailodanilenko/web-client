@@ -1,6 +1,6 @@
 import { VideoScreen } from ".";
 import { render, screen } from "@testing-library/react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useNavigationState } from "@react-navigation/native";
 
 jest.mock("../../api/queries", () => ({
   useGetVideoQuery: jest.fn(() => ({
@@ -14,11 +14,14 @@ jest.mock("../../api/queries", () => ({
     },
   })),
 }));
-jest.mock("expo-router");
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useNavigationState: jest.fn(),
+}));
 
 describe("VideoScreen", () => {
   it("should form a correct video uri and choose highest available quality no more than 1080", () => {
-    (useLocalSearchParams as jest.Mock).mockReturnValueOnce({ id: 123 });
+    (useNavigationState as jest.Mock).mockReturnValueOnce("123");
     render(<VideoScreen />);
     expect(screen.getByTestId("123-video-view-video-playback").props.source.uri).toBe(
       "http://abc.xyz/static/web-videos/123-1080.mp4",
@@ -26,7 +29,7 @@ describe("VideoScreen", () => {
   });
 
   it("should not render video if there is no id", () => {
-    (useLocalSearchParams as jest.Mock).mockReturnValueOnce({ id: null });
+    (useNavigationState as jest.Mock).mockReturnValueOnce(null);
     render(<VideoScreen />);
     expect(screen.queryByTestId("123-video-view-video-playback")).toBeNull();
   });
