@@ -82,7 +82,6 @@ jobs:
         if: ${{ inputs.customizations_env_content != '' }}
         run: |
           echo "BUNDLE_ID=$(echo "${{ inputs.customizations_env_content }}" | grep '^EXPO_PUBLIC_IOS_BUNDLE_IDENTIFIER=' | cut -d'=' -f2)" >> $GITHUB_OUTPUT
-          echo "APP_NAME=$(echo "${{ inputs.customizations_env_content }}" | grep '^EXPO_PUBLIC_APP_NAME=' | cut -d'=' -f2)" >> $GITHUB_OUTPUT
           echo "${{ inputs.customizations_env_content }}" > ./OwnTube.tv/.env
 
       - name: Expo Prebuild assets
@@ -195,6 +194,8 @@ jobs:
           -archivePath ./build/OwnTube.xcarchive \
           -exportPath ./build/OwnTube \
           -exportOptionsPlist ExportOptions.plist
+          
+          mv ./build/OwnTube/*.ipa ./build/OwnTube/OwnTube.ipa
 
       - name: Install private API key P8
         env:
@@ -212,7 +213,7 @@ jobs:
           cd OwnTube.tv/ios && \
           xcrun altool --upload-app \
           --type ${{ inputs.target }} \
-          --file build/OwnTube/${{ steps.create_env.outputs.APP_NAME || 'OwnTube' }}.ipa \
+          --file build/OwnTube/OwnTube.ipa \
           --apiKey "$APPLE_API_KEY" \
           --apiIssuer "$APPLE_API_KEY_ISSUER"
 
