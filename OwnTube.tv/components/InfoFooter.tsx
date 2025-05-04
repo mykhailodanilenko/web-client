@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import { spacing } from "../theme";
+import { borderRadius, spacing } from "../theme";
 import { Logo } from "./Svg";
 import { useTheme } from "@react-navigation/native";
 import { BuildInfo } from "./BuildInfo";
@@ -18,7 +18,11 @@ export const InfoFooter = ({ showBuildInfo }: InfoFooterProps) => {
   return (
     <View style={styles.container}>
       {process.env.EXPO_PUBLIC_FOOTER_LOGO ? (
-        <Image source={{ uri: process.env.EXPO_PUBLIC_FOOTER_LOGO }} style={{ width: 73, height: 73 }} />
+        <Image
+          resizeMode="contain"
+          source={{ uri: process.env.EXPO_PUBLIC_FOOTER_LOGO }}
+          style={styles.footerLogoContainer}
+        />
       ) : (
         <Logo textColor={colors.theme950} width={73} height={32} />
       )}
@@ -55,4 +59,5 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: undefined,
   },
+  footerLogoContainer: { borderRadius: borderRadius.radiusSm, height: 73, width: 73 },
 });
